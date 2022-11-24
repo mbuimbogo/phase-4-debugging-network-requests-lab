@@ -71,3 +71,8 @@ developing your own process.
 - Donate a toy to Goodwill (and delete it from our database)
 
   - How I debugged:
+
+    1. I got the error; **404 (Not Found)** I tried to "donate a toy to goodwill".
+    What could have raised the errors could be a route to handle the HTTP verb +path for the request had not been implemented.
+    Then Network tab guided me to know the destroy route had been implemented to facilitate delete request and I updated it to:
+  `resources :toys, only: [:index, :create, :update]` to `resources :toys, only: [:index, :create, :update, :destroy]`
