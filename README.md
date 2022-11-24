@@ -63,11 +63,28 @@ developing your own process.
 - Add a new toy when the toy form is submitted
 
   - How I debugged:
+  I got error **500 (Internal server error)**.
+
+  Via the Network tab, I was able to stack and trace where the error originated. It was found "NameError (uninitialized constant ToysController::Toys):".
+
+  The toy object had been created using `toy = Toys.create(toy_params)`. 
+  "Toys" is an inexistent class in stead of just "Toy", and I replaced "Toys" with "Toy" in that statement 
 
 - Update the number of likes for a toy
 
   - How I debugged:
+   When I tried liking a toy, I got the error **Uncaught (in promise) SyntaxError: Unexpected end of JSON input** . I realised the response was not a valid JSON.
+
+   In the last statement in the update action, the Toy instance was not a valid JSON: `toy.update(toy_params)`. I replaced it to `toy.update(toy_params)` with `render json: toy.update(toy_params)` to make the action returns
+  a JSON object that is being expected in the front-end.
 
 - Donate a toy to Goodwill (and delete it from our database)
 
   - How I debugged:
+
+  I got the error; **404 (Not Found)** I tried to "donate a toy to goodwill".
+    
+  What could have raised the errors could be a route to handle the HTTP verb +path for the request had not been implemented.
+  
+  Then Network tab guided me to know the destroy route had been implemented to facilitate delete request and I updated it to:
+  `resources :toys, only: [:index, :create, :update]` to `resources :toys, only: [:index, :create, :update, :destroy]`
